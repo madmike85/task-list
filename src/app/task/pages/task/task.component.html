@@ -1,1 +1,42 @@
-<p>task works!</p>
+<h2 class="task__title">Update Task</h2>
+
+<form [formGroup]="taskForm" class="task__form">
+  <mat-form-field class="full-width">
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title" placeholder="Enter task title" />
+    <mat-error *ngIf="taskForm.get('title').hasError('required')">
+      Title is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>Description</mat-label>
+    <input matInput formControlName="description" placeholder="Enter task description" />
+    <mat-error *ngIf="taskForm.get('description').hasError('required')">
+      Description is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>Priority</mat-label>
+    <mat-select formControlName="priority">
+      <mat-option *ngFor="let priority of priorities" [value]="priority">
+        {{ priority }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="taskForm.get('priority').hasError('required')">
+      Priority is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>Choose a deadline date</mat-label>
+    <input matInput [matDatepicker]="deadlineDate" formControlName="deadlineDate" />
+    <mat-datepicker-toggle matSuffix [for]="deadlineDate"></mat-datepicker-toggle>
+    <mat-datepicker #deadlineDate></mat-datepicker>
+  </mat-form-field>
+</form>
+
+<div class="task__button-row">
+  <button mat-raised-button class="save__btn" color="accent" (click)="onSave(taskForm)">
+    Save
+  </button>
+  <a [routerLink]="['/tasks']" mat-raised-button color="warn">Cancel</a>
+</div>

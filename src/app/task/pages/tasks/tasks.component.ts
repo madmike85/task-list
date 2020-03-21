@@ -28,10 +28,11 @@ export class TasksComponent implements OnInit {
   constructor(private taskService: TaskService) {}
 
   public ngOnInit(): void {
-    //this.createTable();
+    console.log(this.selection);
     this.taskService.currentTasks.subscribe((tasks: ITask[]) => {
       this.tasks = tasks;
       this.dataSource = new MatTableDataSource<ITask>(this.tasks);
+      console.log(tasks);
     });
   }
 
@@ -41,9 +42,13 @@ export class TasksComponent implements OnInit {
   }
 
   public deleteTask(id: number): void {
-    console.log(id);
     this.taskService.deleteTask(id);
-    this.createTable();
+  }
+
+  public deleteManyTask(): void {
+    this.selection.selected.forEach((task: ITask) => {
+      this.taskService.deleteTask(task.id);
+    });
   }
 
   public isAllSelected(): boolean {
@@ -63,5 +68,9 @@ export class TasksComponent implements OnInit {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+  }
+
+  public toggleTask(id: number): void {
+    this.taskService.toggleTaskComplete(id);
   }
 }

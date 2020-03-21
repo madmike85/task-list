@@ -58,9 +58,28 @@ export class TaskService {
     return this.tasks;
   }
 
+  public getTask(id: string): ITask {
+    return this.tasks[id];
+  }
+
   public deleteTask(id: number): void {
     const taskIndex: number = this.tasks.findIndex((task: ITask) => task.id === id);
     this.tasks = this.tasks.filter((_, index) => index !== taskIndex);
+    this.taskSource.next(this.tasks);
+  }
+
+  public addTask(task: ITask): void {
+    this.tasks.push(task);
+  }
+
+  public updateTask(id: number, task: ITask): void {
+    const taskIndex: number = this.tasks.findIndex((task: ITask) => task.id === id);
+    this.tasks[taskIndex] = task;
+  }
+
+  public toggleTaskComplete(id: number): void {
+    const taskIndex: number = this.tasks.findIndex((task: ITask) => task.id === id);
+    this.tasks[taskIndex].completed = !this.tasks[taskIndex].completed;
     this.taskSource.next(this.tasks);
   }
 }
