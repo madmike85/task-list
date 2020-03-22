@@ -18,6 +18,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { HighlightRedDirective } from './directives/highlight-red.directive';
 import { LineThroughDirective } from './directives/line-through.directive';
 import { MatNativeDateModule } from '@angular/material/core';
+import { FiltersComponent } from './components/filters/filters.component';
+import { FilterByPriorityPipe } from './pipes/filter-by-priority.pipe';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     TaskComponent,
     HighlightRedDirective,
     LineThroughDirective,
+    FiltersComponent,
+    FilterByPriorityPipe,
   ],
   imports: [
     CommonModule,

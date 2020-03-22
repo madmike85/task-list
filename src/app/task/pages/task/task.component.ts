@@ -11,7 +11,16 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 })
 export class TaskComponent implements OnInit {
   public id: number;
-  public taskForm: FormGroup;
+  public taskForm: FormGroup = new FormGroup({
+    id: new FormControl(),
+    title: new FormControl(),
+    description: new FormControl(),
+    priority: new FormControl(),
+    createdDate: new FormControl(),
+    deadlineDate: new FormControl(),
+    completedDate: new FormControl(),
+    completed: new FormControl(),
+  });
 
   public priorities = ['normal', 'important', 'very important'];
 
@@ -24,17 +33,18 @@ export class TaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      const task: ITask = this.taskService.getTask(params.id);
-      this.id = task.id;
-      this.taskForm = this.formBuilder.group({
-        id: new FormControl(task.id),
-        title: new FormControl(task.title, [Validators.required]),
-        description: new FormControl(task.description, [Validators.required]),
-        priority: new FormControl(task.priority, [Validators.required]),
-        createdDate: new FormControl(task.createdDate, [Validators.required]),
-        deadlineDate: new FormControl(task.deadlineDate),
-        completedDate: new FormControl(task.completedDate),
-        completed: new FormControl(task.completed),
+      this.taskService.getTask(params.id).subscribe((task: ITask) => {
+        this.id = task.id;
+        this.taskForm = this.formBuilder.group({
+          id: new FormControl(task.id),
+          title: new FormControl(task.title, [Validators.required]),
+          description: new FormControl(task.description, [Validators.required]),
+          priority: new FormControl(task.priority, [Validators.required]),
+          createdDate: new FormControl(task.createdDate, [Validators.required]),
+          deadlineDate: new FormControl(task.deadlineDate),
+          completedDate: new FormControl(task.completedDate),
+          completed: new FormControl(task.completed),
+        });
       });
     });
   }

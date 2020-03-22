@@ -1,8 +1,40 @@
 table {
   width: 100%;
+  border-spacing: 0;
+}
+
+th {
+  text-align: left;
+  padding: 10px 0;
+  border-bottom: 1px solid black;
+
+  &:first-child {
+    padding-left: 2%;
+  }
+
+  &:last-child {
+    padding-right: 2%;
+  }
+}
+
+td {
+  padding: 10px 0;
+  border-bottom: 1px solid black;
+
+  &:first-child {
+    padding-left: 2%;
+  }
+
+  &:last-child {
+    padding-right: 2%;
+  }
 }
 
 .button__row {
   display: flex;
   justify-content: space-evenly;
+}
+
+.completed {
+  text-decoration: line-through;
 }

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
 import { ITask } from 'src/app/core/models/task.model';
 import { TaskService } from '../../services/task.service';
+import { FilterService } from '../../services/filter.service';
 
 @Component({
   selector: 'app-tasks',
@@ -11,66 +10,61 @@ import { TaskService } from '../../services/task.service';
 })
 export class TasksComponent implements OnInit {
   public tasks: ITask[];
-  public displayedColumns: string[] = [
-    'select',
-    'title',
-    'description',
-    'priority',
-    'createdDate',
-    'deadlineDate',
-    'completedDate',
-    'completed',
-    'controls',
-  ];
-  public dataSource: MatTableDataSource<ITask>;
-  public selection = new SelectionModel<ITask>(true, []);
 
-  constructor(private taskService: TaskService) {}
+  public selection: Object = {};
 
-  public ngOnInit(): void {
-    console.log(this.selection);
-    this.taskService.currentTasks.subscribe((tasks: ITask[]) => {
-      this.tasks = tasks;
-      this.dataSource = new MatTableDataSource<ITask>(this.tasks);
-      console.log(tasks);
+  public filterCriteria = 'all';
+
+  constructor(private taskService: TaskService, private filterService: FilterService) {}
+
+  private toggleAll(state: boolean): void {
+    this.tasks.forEach((task: ITask) => {
+      this.selection[task.id] = state;
     });
   }
 
-  public createTable(): void {
-    this.tasks = this.taskService.getTasks();
-    this.dataSource = new MatTableDataSource<ITask>(this.tasks);
+  public ngOnInit(): void {
+    this.taskService.getTasks().subscribe((tasks: ITask[]) => {
+      this.tasks = tasks;
+    });
+    this.filterService.currentFilerCriteria.subscribe(
+      (criteria: string) => (this.filterCriteria = criteria),
+    );
   }
 
   public deleteTask(id: number): void {
-    this.taskService.deleteTask(id);
-  }
-
-  public deleteManyTask(): void {
-    this.selection.selected.forEach((task: ITask) => {
-      this.taskService.deleteTask(task.id);
+    this.taskService.deleteTask(id).subscribe((tasks: ITask[]) => {
+      this.tasks = tasks;
     });
   }
 
-  public isAllSelected(): boolean {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
+  public deleteManyTask(): void {
+    Object.keys(this.selection).forEach((id: string) => {
+      this.taskService.deleteTask(+id).subscribe((tasks: ITask[]) => {
+        this.tasks = tasks;
+      });
+    });
   }
 
-  public masterToggle(): void {
-    this.isAllSelected()
-      ? this.selection.clear()
-      : this.dataSource.data.forEach((row) => this.selection.select(row));
+  public completeTask(id: number): void {
+    this.taskService.completeTask(id).subscribe((tasks: ITask[]) => {
+      this.tasks = tasks;
+    });
   }
 
-  public checkboxLabel(row?: ITask): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+  public addSelection(id: string, event: any): void {
+    this.selection[id] = event.checked;
+  }
+
+  public getSelectionLength(): number {
+    return Object.values(this.selection).filter((item: boolean) => item).length;
+  }
+
+  public masterToggle(event: any): void {
+    if (event.checked && this.getSelectionLength() === 0) {
+      this.toggleAll(true);
+    } else if (!event.checked) {
+      this.toggleAll(false);
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
-  }
-
-  public toggleTask(id: number): void {
-    this.taskService.toggleTaskComplete(id);
   }
 }

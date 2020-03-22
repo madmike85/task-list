@@ -21,14 +21,10 @@ export class NewTaskComponent implements OnInit {
 
   public ngOnInit(): void {
     this.taskForm = this.formBuilder.group({
-      id: new FormControl(12),
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
       priority: new FormControl('', [Validators.required]),
-      createdDate: new FormControl(new Date(Date.now()).toISOString(), [Validators.required]),
       deadlineDate: new FormControl(''),
-      completedDate: new FormControl(''),
-      completed: new FormControl(false),
     });
   }
 
