@@ -1,0 +1,26 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 150px;
+}
+
+.title {
+  font-size: 120px;
+  line-height: 120px;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 20px;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+
+  &:hover {
+    color: #673ab7;
+  }
+}

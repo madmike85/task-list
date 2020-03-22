@@ -20,6 +20,7 @@ import { LineThroughDirective } from './directives/line-through.directive';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FiltersComponent } from './components/filters/filters.component';
 import { FilterByPriorityPipe } from './pipes/filter-by-priority.pipe';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { FilterByPriorityPipe } from './pipes/filter-by-priority.pipe';
     LineThroughDirective,
     FiltersComponent,
     FilterByPriorityPipe,
+    NotFoundComponent,
   ],
   imports: [
     CommonModule,
