@@ -1,6 +1,6 @@
 <app-filters></app-filters>
 
-<table class="table">
+<table *ngIf="!isError; else errorBlock" class="table">
   <thead>
     <th>
       <mat-checkbox [checked]="getSelectionLength() > 0" (change)="masterToggle($event)">
@@ -28,51 +28,32 @@
   </thead>
 
   <tbody>
-    <tr *ngFor="let task of tasks | filterByPriority: filterCriteria">
+    <tr
+      *ngFor="let task of tasks | filterByPriority: filterCriteria"
+      [appHighlightRed]="task.deadlineDate"
+      [completed]="task.completed"
+      [appLineThrough]="task.completed"
+    >
       <td>
         <mat-checkbox (change)="addSelection(task.id, $event)" [checked]="selection[task.id]">
         </mat-checkbox>
       </td>
-      <td
-        [appHighlightRed]="task.deadlineDate"
-        [completed]="task.completed"
-        [appLineThrough]="task.completed"
-      >
+      <td>
         {{ task.title }}
       </td>
-      <td
-        [appHighlightRed]="task.deadlineDate"
-        [completed]="task.completed"
-        [appLineThrough]="task.completed"
-      >
+      <td>
         {{ task.description }}
       </td>
-      <td
-        [appHighlightRed]="task.deadlineDate"
-        [completed]="task.completed"
-        [appLineThrough]="task.completed"
-      >
+      <td>
         {{ task.priority }}
       </td>
-      <td
-        [appHighlightRed]="task.deadlineDate"
-        [completed]="task.completed"
-        [appLineThrough]="task.completed"
-      >
+      <td>
         {{ task.createdDate | date }}
       </td>
-      <td
-        [appHighlightRed]="task.deadlineDate"
-        [completed]="task.completed"
-        [appLineThrough]="task.completed"
-      >
+      <td>
         {{ task.deadlineDate | date }}
       </td>
-      <td
-        [appHighlightRed]="task.deadlineDate"
-        [completed]="task.completed"
-        [appLineThrough]="task.completed"
-      >
+      <td>
         {{ task.completedDate | date }}
       </td>
       <td>
@@ -91,3 +72,6 @@
     </tr>
   </tbody>
 </table>
+<ng-template #errorBlock>
+  <p class="errorBlock">Server is not responding</p>
+</ng-template>

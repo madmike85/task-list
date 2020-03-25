@@ -31,11 +31,20 @@
     <input matInput [matDatepicker]="deadlineDate" formControlName="deadlineDate" />
     <mat-datepicker-toggle matSuffix [for]="deadlineDate"></mat-datepicker-toggle>
     <mat-datepicker #deadlineDate></mat-datepicker>
+    <mat-error *ngIf="!taskForm.get('deadlineDate').valid">
+      Only a date is <strong>acceptable</strong>
+    </mat-error>
   </mat-form-field>
 </form>
 
 <div class="task__button-row">
-  <button mat-raised-button class="save__btn" color="accent" (click)="onSave(taskForm)">
+  <button
+    mat-raised-button
+    class="save__btn"
+    color="accent"
+    [disabled]="!taskForm.valid"
+    (click)="onSave(taskForm)"
+  >
     Save
   </button>
   <a [routerLink]="['/tasks']" mat-raised-button color="warn">Cancel</a>

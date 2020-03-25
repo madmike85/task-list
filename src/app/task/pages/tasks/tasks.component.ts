@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ITask } from 'src/app/core/models/task.model';
 import { TaskService } from '../../services/task.service';
 import { FilterService } from '../../services/filter.service';
+import { throwError, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tasks',
@@ -15,6 +17,8 @@ export class TasksComponent implements OnInit {
 
   public filterCriteria = 'all';
 
+  public isError = false;
+
   constructor(private taskService: TaskService, private filterService: FilterService) {}
 
   private toggleAll(state: boolean): void {
@@ -24,9 +28,15 @@ export class TasksComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.taskService.getTasks().subscribe((tasks: ITask[]) => {
-      this.tasks = tasks;
-    });
+    this.taskService.getTasks().subscribe(
+      (tasks: ITask[]) => {
+        this.tasks = tasks;
+      },
+      (err) => {
+        console.log(err);
+        this.isError = true;
+      },
+    );
     this.filterService.currentFilerCriteria.subscribe(
       (criteria: string) => (this.filterCriteria = criteria),
     );
