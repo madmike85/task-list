@@ -10,11 +10,11 @@ const { mongoose } = require('./db/mongoose');
 const { Task } = require('./db/models/task.model');
 
 // Serve static files....
-app.use(express.static(__dirname + '/dist/task-list'));
+app.use(express.static(__dirname + '/dist'));
 
 // Send all requests to index.html
 app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname + '/dist/task-list/index.html'));
+  res.sendFile(path.join(__dirname + '/dist/index.html'));
 });
 
 app.use(cors());
