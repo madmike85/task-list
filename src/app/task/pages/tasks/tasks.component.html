@@ -35,7 +35,7 @@
       [appLineThrough]="task.completed"
     >
       <td>
-        <mat-checkbox (change)="addSelection(task.id, $event)" [checked]="selection[task.id]">
+        <mat-checkbox (change)="addSelection(task._id, $event)" [checked]="selection[task._id]">
         </mat-checkbox>
       </td>
       <td>
@@ -57,14 +57,14 @@
         {{ task.completedDate | date }}
       </td>
       <td>
-        <mat-checkbox (change)="completeTask(task.id)" [checked]="task.completed"> </mat-checkbox>
+        <mat-checkbox (change)="completeTask(task._id)" [checked]="task.completed"> </mat-checkbox>
       </td>
       <td>
         <div class="button__row">
-          <a mat-raised-button [routerLink]="['/tasks', 'task', task.id]"
+          <a mat-raised-button [routerLink]="['/tasks', 'task', task._id]"
             ><mat-icon aria-hidden="false" aria-label="Edit task">edit</mat-icon></a
           >
-          <button mat-raised-button color="warn" (click)="deleteTask(task.id)">
+          <button mat-raised-button color="warn" (click)="deleteTask(task._id)">
             <mat-icon aria-hidden="false" aria-label="Edit task">delete_forever</mat-icon>
           </button>
         </div>

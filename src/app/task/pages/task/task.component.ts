@@ -10,7 +10,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
   styleUrls: ['./task.component.scss'],
 })
 export class TaskComponent implements OnInit {
-  public id: number;
+  public id: string;
   public taskForm: FormGroup = new FormGroup({
     id: new FormControl(),
     title: new FormControl(),
@@ -34,16 +34,16 @@ export class TaskComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.taskService.getTask(params.id).subscribe((task: ITask) => {
-        this.id = task.id;
+        this.id = task._id;
         this.taskForm = this.formBuilder.group({
-          id: new FormControl(task.id),
+          //id: new FormControl(task.id),
           title: new FormControl(task.title, [Validators.required]),
           description: new FormControl(task.description, [Validators.required]),
           priority: new FormControl(task.priority, [Validators.required]),
-          createdDate: new FormControl(task.createdDate, [Validators.required]),
+          //createdDate: new FormControl(task.createdDate, [Validators.required]),
           deadlineDate: new FormControl(task.deadlineDate),
-          completedDate: new FormControl(task.completedDate),
-          completed: new FormControl(task.completed),
+          //completedDate: new FormControl(task.completedDate),
+          //completed: new FormControl(task.completed),
         });
       });
     });

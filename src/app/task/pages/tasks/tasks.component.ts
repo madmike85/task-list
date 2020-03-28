@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ITask } from 'src/app/core/models/task.model';
 import { TaskService } from '../../services/task.service';
 import { FilterService } from '../../services/filter.service';
-import { throwError, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tasks',
@@ -23,7 +21,7 @@ export class TasksComponent implements OnInit {
 
   private toggleAll(state: boolean): void {
     this.tasks.forEach((task: ITask) => {
-      this.selection[task.id] = state;
+      this.selection[task._id] = state;
     });
   }
 
@@ -42,23 +40,30 @@ export class TasksComponent implements OnInit {
     );
   }
 
-  public deleteTask(id: number): void {
-    this.taskService.deleteTask(id).subscribe((tasks: ITask[]) => {
-      this.tasks = tasks;
-    });
-  }
-
-  public deleteManyTask(): void {
-    Object.keys(this.selection).forEach((id: string) => {
-      this.taskService.deleteTask(+id).subscribe((tasks: ITask[]) => {
+  public deleteTask(id: string): void {
+    this.taskService.deleteTask(id).subscribe(() => {
+      this.taskService.getTasks().subscribe((tasks: ITask[]) => {
         this.tasks = tasks;
       });
     });
   }
 
-  public completeTask(id: number): void {
-    this.taskService.completeTask(id).subscribe((tasks: ITask[]) => {
-      this.tasks = tasks;
+  public deleteManyTask(): void {
+    Object.keys(this.selection).forEach((id: string) => {
+      this.taskService.deleteTask(id).subscribe(() => {
+        this.taskService.getTasks().subscribe((tasks: ITask[]) => {
+          this.tasks = tasks;
+        });
+      });
+      delete this.selection[id];
+    });
+  }
+
+  public completeTask(id: string): void {
+    this.taskService.completeTask(id).subscribe(() => {
+      this.taskService.getTasks().subscribe((tasks: ITask[]) => {
+        this.tasks = tasks;
+      });
     });
   }
 

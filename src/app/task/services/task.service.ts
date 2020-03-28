@@ -18,7 +18,7 @@ export class TaskService {
     return this.http.get<ITask>(`tasks/${id}`);
   }
 
-  public deleteTask(id: number): Observable<ITask[]> {
+  public deleteTask(id: string): Observable<ITask[]> {
     return this.http.delete<ITask[]>(`tasks/${id}`);
   }
 
@@ -26,11 +26,14 @@ export class TaskService {
     this.http.post<ITask>(`tasks`, task).subscribe();
   }
 
-  public updateTask(id: number, task: ITask): void {
-    this.http.put<ITask>(`tasks/${id}`, task).subscribe();
+  public updateTask(id: string, task: ITask): void {
+    this.http.patch<INewTask>(`tasks/${id}`, task).subscribe();
   }
 
-  public completeTask(id: number): Observable<ITask[]> {
-    return this.http.patch<ITask[]>(`tasks/${id}`, { completed: true });
+  public completeTask(id: string): Observable<Object> {
+    return this.http.patch<Object>(`tasks/${id}`, {
+      completed: true,
+      completedDate: new Date(Date.now()).toISOString(),
+    });
   }
 }
