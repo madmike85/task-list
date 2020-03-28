@@ -5,8 +5,7 @@ dotenv.config();
 //const password = 'mike';
 
 const uri =
-  process.env.MONGODB_URL ||
-  `mongodb+srv://mike:${process.env.MONGODB_PASSWORD}@cluster0-xf25y.mongodb.net/test?retryWrites=true&w=majority` ||
+  `mongodb+srv://mike:mike@cluster0-xf25y.mongodb.net/task-app?retryWrites=true&w=majority` ||
   'mongodb://localhost:27017/tasks-app';
 
 mongoose.Promise = global.Promise;
